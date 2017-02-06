@@ -51,6 +51,7 @@ lang_config_configure(
   }
   while ((dd = readdir(d))) {
     len = strlen(dd->d_name);
+    fprintf(log_f, "info: config_file...=%s, ", dd->d_name);
     if (len <= 4) continue;
     if (strcmp(dd->d_name + len - 4, ".cfg") != 0) continue;
     snprintf(base, sizeof(base), "%.*s", len - 4, dd->d_name);

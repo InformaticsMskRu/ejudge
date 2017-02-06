@@ -369,7 +369,7 @@ ns_strerror(int code, ...)
   va_start(args, code);
   vsnprintf(buf2, sizeof(buf2), gettext(s), args);
   va_end(args);
-  snprintf(buf, sizeof(buf), "%s.\n", buf2);
+  snprintf(buf, sizeof(buf), "{'text': '%s', 'code' : %d}\n", buf2, code);
   return buf;
 }
 
@@ -408,7 +408,7 @@ ns_strerror_r(unsigned char *buf, size_t size, int code, ...)
   va_start(args, code);
   vsnprintf(buf2, sizeof(buf2), gettext(s), args);
   va_end(args);
-  snprintf(buf, size, "%s.\n", buf2);
+  snprintf(buf, size, "{'text': '%s', 'code' : %d}\n", buf, code);
   return buf;
 }
 
@@ -416,6 +416,7 @@ void
 ns_error(FILE *log_f, int code, ...)
 {
   const unsigned char *s = 0;
+  unsigned char buf2[1024];  
   va_list args;
 
   if (code < 0) code = -code;
@@ -423,9 +424,9 @@ ns_error(FILE *log_f, int code, ...)
     fprintf(log_f, _("Unknown error %d.\n"), code);
     return;
   }
-
   va_start(args, code);
-  vfprintf(log_f, gettext(s), args);
+  vsnprintf(buf2, sizeof(buf2), gettext(s), args);
   va_end(args);
-  fprintf(log_f, ".\n");
+
+  fprintf(log_f, "{'text': '%s', 'code' : %d}\n", buf2, code);
 }

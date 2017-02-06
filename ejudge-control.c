@@ -259,6 +259,7 @@ command_start(
       snprintf(path, sizeof(path), "%s/ej-super-run", EJUDGE_SERVER_BIN_PATH);
       tsk = task_New();
       task_AddArg(tsk, path);
+      task_AddArg(tsk, "-a");
       task_AddArg(tsk, "-D");
       if (user) {
         task_AddArg(tsk, "-u");

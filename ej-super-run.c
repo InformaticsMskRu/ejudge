@@ -168,6 +168,7 @@ find_abstract_tester(serve_state_t state, const unsigned char *arch)
 {
   if (!state || !arch || state->max_abstr_tester <= 0) return NULL;
   for (int i = 0; i < state->max_abstr_tester; ++i) {
+    err("%s", state->abstr_testers[i]->arch);
     if (!strcmp(arch, state->abstr_testers[i]->arch)) {
       return state->abstr_testers[i];
     }
