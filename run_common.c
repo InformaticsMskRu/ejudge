@@ -1823,19 +1823,6 @@ touch_file(const unsigned char *path)
 }
 
 static void
-make_timelimit(unsigned char *buf, int blen, size_t timelimit)
-{
-  unsigned char bt[1024];
-
-  buf[0] = 0;
-  if (timelimit) {
-    snprintf(buf, blen, "TIMELIMIT=%s",
-             size_t_to_size(bt, sizeof(bt), timelimit));
-  }
-}
-
-
-static void
 make_java_limits(unsigned char *buf, int blen, size_t max_vm_size, size_t max_stack_size)
 {
   unsigned char bv[1024], bs[1024];
@@ -2519,8 +2506,10 @@ run_one_test(
     fcntl(pfd2[1], F_SETFD, FD_CLOEXEC);
 
     tsk_int = invoke_interactor(interactor_cmd, test_src, output_path, corr_src,
-                                working_dir, check_out_path, srpp->interactor_env, srgp->checker_locale,
-                                pfd1[0], pfd2[1], srpp->interactor_time_limit_ms);
+                                working_dir, check_out_path,
+                                srpp->interactor_env, srgp->checker_locale,
+                                &tstinfo, pfd1[0], pfd2[1],
+                                srpp->interactor_time_limit_ms, task_GetPid(tsk));
     if (!tsk_int) {
       append_msg_to_log(check_out_path, "interactor failed to start");
       goto check_failed;

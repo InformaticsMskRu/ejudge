@@ -1982,14 +1982,14 @@ enum
   ARCH_MSIL,
   ARCH_WIN32,
   ARCH_VALGRIND,
-
+  ARCH_1C,
   ARCH_LAST,
 };
 
 static const unsigned char * const supported_archs[] =
 {
   "",                           /* default - Linux static */
-  "linux-shared",
+  "linux-shared",:
   "linux-shared-32",
   "dos",
   "java",
