@@ -17,7 +17,7 @@
  * GNU General Public License for more details.
  */
 
-#define RUNLOG_MAX_SIZE    (2 * 1024 * 1024)
+#define RUNLOG_MAX_SIZE    (2 * 1024 * 1024 * 10)
 
 enum
   {

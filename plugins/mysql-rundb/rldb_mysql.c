@@ -294,7 +294,7 @@ load_header(
 
   memset(&rh, 0, sizeof(rh));
   if (mi->fquery(md, HEADERS_ROW_WIDTH,
-                 "SELECT * FROM %srunheaders WHERE contest_id = %d ; ",
+                 " %srunheaders WHERE contest_id = %d ; ",
                  md->table_prefix, cs->contest_id) < 0)
     goto fail;
   if (md->row_count > 1) {
@@ -396,7 +396,7 @@ load_runs(struct rldb_mysql_cnts *cs)
 
   memset(&ri, 0, sizeof(ri));
   if (mi->fquery(md, RUNS_ROW_WIDTH,
-                 "SELECT * FROM %sruns WHERE contest_id=%d ORDER BY run_id ;",
+                 "SELECT * FROM %sruns WHERE contest_id=%d ORDER BY run_id desc limit 1500;",
                  md->table_prefix, cs->contest_id) < 0)
     goto fail;
   if (!md->row_count) {

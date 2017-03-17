@@ -33,7 +33,7 @@
 #define EJUDGE_CHARSET EJ_INTERNAL_CHARSET
 #endif /* EJUDGE_CHARSET */
 
-#define RUNLOG_MAX_TEAM_ID 100000
+#define RUNLOG_MAX_TEAM_ID 300000
 #define CLARLOG_MAX_CLAR_ID 100000
 #define BPE (CHAR_BIT * sizeof(((struct team_extra*)0)->clar_map[0]))
 

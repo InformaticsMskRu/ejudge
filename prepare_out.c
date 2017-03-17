@@ -1998,6 +1998,7 @@ static const unsigned char * const supported_archs[] =
   "msil",
   "win32",
   "valgrind",
+  "1c",
 
   0,
 };
@@ -2013,6 +2014,7 @@ static const unsigned char * const arch_abstract_names [] =
   "Linux-msil",
   "Win32",
   "Valgrind",
+  "Linux-1c",
 
   0,
 };
@@ -2241,6 +2243,9 @@ generate_abstract_tester(
     }
     break;
 
+  case ARCH_1C:
+    break;
+
   case ARCH_WIN32:
     fprintf(f, "[tester]\n"
             "name = %s\n"
@@ -2360,6 +2365,9 @@ generate_concrete_tester(FILE *f, int arch,
     break;
 
   case ARCH_PERL:
+    break;
+
+  case ARCH_1C:
     break;
 
   case ARCH_MSIL:

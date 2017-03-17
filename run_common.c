@@ -1823,7 +1823,20 @@ touch_file(const unsigned char *path)
 }
 
 static void
-make_java_limits(unsigned char *buf, int blen, ej_size64_t max_vm_size, ej_size64_t max_stack_size)
+make_timelimit(unsigned char *buf, int blen, size_t timelimit)
+{
+  unsigned char bt[1024];
+
+  buf[0] = 0;
+  if (timelimit) {
+    snprintf(buf, blen, "TIMELIMIT=%s",
+             size_t_to_size(bt, sizeof(bt), timelimit));
+  }
+}
+
+
+static void
+make_java_limits(unsigned char *buf, int blen, size_t max_vm_size, size_t max_stack_size)
 {
   unsigned char bv[1024], bs[1024];
 
@@ -2156,6 +2169,7 @@ run_one_test(
   unsigned char arch_entry_name[PATH_MAX];
 
   unsigned char mem_limit_buf[PATH_MAX];
+  unsigned char time_limit_buf[PATH_MAX];
 
   struct testinfo *cur_info = NULL;
   int time_limit_value_ms = 0;
@@ -2503,6 +2517,14 @@ run_one_test(
     }
     fcntl(pfd2[0], F_SETFD, FD_CLOEXEC);
     fcntl(pfd2[1], F_SETFD, FD_CLOEXEC);
+
+    tsk_int = invoke_interactor(interactor_cmd, test_src, output_path, corr_src,
+                                working_dir, check_out_path, srpp->interactor_env, srgp->checker_locale,
+                                pfd1[0], pfd2[1], srpp->interactor_time_limit_ms);
+    if (!tsk_int) {
+      append_msg_to_log(check_out_path, "interactor failed to start");
+      goto check_failed;
+    }
   }
 #endif
 
@@ -2874,6 +2896,10 @@ run_one_test(
   }
   if (file_size >= 0) {
     cur_info->output_size = file_size;
+
+    info("Output file size = %lld, max file = %lld, full_archive enable %d",
+       file_size, (long long)srgp->max_file_length, srgp->enable_full_archive);
+
     if (srgp->max_file_length > 0 && srgp->enable_full_archive <= 0 && file_size <= srgp->max_file_length) {
       generic_read_file(&cur_info->output, 0, 0, 0, 0, output_path, "");
     }
