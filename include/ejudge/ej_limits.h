@@ -23,7 +23,7 @@
 #define EJ_MAX_USER_ID  999999         // [1 .. MAX]
 
 /* maximal possible number of a submit */
-#define EJ_MAX_RUN_ID   999999         // [0 .. MAX]
+#define EJ_MAX_RUN_ID   99999999         // [0 .. MAX]
 
 /* maximal possible number of a message */
 #define EJ_MAX_CLAR_ID  999999         // [0 .. MAX]

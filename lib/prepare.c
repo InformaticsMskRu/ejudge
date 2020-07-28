@@ -892,7 +892,7 @@ global_init_func(struct generic_section_config *gp)
   p->html_report = -1;
   p->xml_report = -1;
   p->advanced_layout = -1;
-  p->uuid_run_store = -1;
+  p->uuid_run_store = 1;
   p->enable_32bit_checkers = -1;
   p->ignore_bom = -1;
   p->disable_auto_refresh = -1;
@@ -1294,7 +1294,7 @@ prepare_problem_init_func(struct generic_section_config *gp)
   p->tokens_for_user_ac = -1;
   p->disable_submit_after_ok = -1;
   p->disable_security = -1;
-  p->enable_suid_run = -1;
+  p->enable_suid_run = 1;
   p->enable_multi_header = -1;
   p->use_lang_multi_header = -1;
   p->require_any = -1;

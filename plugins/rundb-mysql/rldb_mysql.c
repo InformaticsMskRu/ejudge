@@ -14,6 +14,7 @@
  * GNU General Public License for more details.
  */
 
+#include "http_notify.h"
 #include "ejudge/config.h"
 #include "ejudge/ej_limits.h"
 #include "ejudge/rldb_plugin.h"
@@ -54,6 +55,7 @@ struct rldb_mysql_state
   struct common_mysql_state *md;
 
   int window;
+  unsigned char *notification_url;
 };
 
 struct rldb_mysql_cnts
@@ -164,6 +166,8 @@ prepare_func(
       if (p->first_down) return xml_err_nested_elems(p);
       if (state->window > 0) return xml_err_elem_redefined(p);
       if (xml_parse_int(NULL, "", p->line, p->column, p->text, &state->window) < 0) return -1;
+    } else if (!strcmp(p->name[0], "notification_url")) {
+	  if (xml_leaf_elem(p, &state->notification_url, 1, 0) < 0) return -1;
     } else {
       return xml_err_elem_not_allowed(p);
     }
@@ -1266,9 +1270,13 @@ change_status_func(
   te.score = new_score;
   te.judge_id = new_judge_id;
 
-  return do_update_entry(cs, run_id, &te,
+  int ret = do_update_entry(cs, run_id, &te,
                          RE_STATUS | RE_TEST | RE_SCORE | RE_JUDGE_ID | RE_PASSED_MODE,
                          NULL);
+  if (ret >= 0) {
+    http_notify(cs->contest_id, run_id, new_status, cs->plugin_state->notification_url);
+  }
+  return ret; 
 }
 
 static void
@@ -1711,9 +1719,13 @@ change_status_2_func(
   te.judge_id = new_judge_id;
   te.is_marked = new_is_marked;
 
-  return do_update_entry(cs, run_id, &te,
+  int ret = do_update_entry(cs, run_id, &te,
                          RE_STATUS | RE_TEST | RE_SCORE | RE_JUDGE_ID | RE_IS_MARKED | RE_PASSED_MODE,
                          NULL);
+  if (ret >= 0) {
+    http_notify(cs->contest_id, run_id, new_status, cs->plugin_state->notification_url);
+  } 
+  return ret;
 }
 
 static int
@@ -1762,10 +1774,14 @@ change_status_3_func(
   te.saved_test = user_tests_passed;
   te.saved_score = user_score;
 
-  return do_update_entry(cs, run_id, &te,
+  int ret = do_update_entry(cs, run_id, &te,
                          RE_STATUS | RE_TEST | RE_SCORE | RE_JUDGE_ID | RE_IS_MARKED
                          | RE_IS_SAVED | RE_SAVED_STATUS | RE_SAVED_TEST | RE_SAVED_SCORE | RE_PASSED_MODE,
                          NULL);
+  if (ret >= 0) {
+    http_notify(cs->contest_id, run_id, new_status, cs->plugin_state->notification_url);
+  } 
+  return ret;
 }
 
 static int
@@ -1789,11 +1805,15 @@ change_status_4_func(
   te.saved_score = 0;
   te.passed_mode = 1;
 
-  return do_update_entry(cs, run_id, &te,
+  int ret = do_update_entry(cs, run_id, &te,
                          RE_STATUS /* | RE_TEST */ | RE_SCORE | RE_JUDGE_ID
                          | RE_IS_MARKED | RE_IS_SAVED | RE_SAVED_STATUS
                          /* | RE_SAVED_TEST */ | RE_SAVED_SCORE | RE_PASSED_MODE,
                          NULL);
+  if (ret >= 0) {
+    http_notify(cs->contest_id, run_id, new_status, cs->plugin_state->notification_url);
+  }
+  return ret;
 }
 
 static int

@@ -657,7 +657,7 @@ check_func(void *data)
     version = 9;
   }
   if (version == 9) {
-    if (state->mi->simple_fquery(state->md, "CREATE TABLE %sapikeys(token VARCHAR(64) NOT NULL PRIMARY KEY, secret VARCHAR(64) NOT NULL UNIQUE KEY, user_id INT UNSIGNED NOT NULL, contest_id INT UNSIGNED NOT NULL, create_time DATETIME NOT NULL, expiry_time DATETIME DEFAULT NULL, payload VARCHAR(1024) DEFAULT NULL, origin VARCHAR(128) DEFAULT NULL, all_contests TINYINT NOT NULL DEFAULT 0, role_id TINYINT NOT NULL DEFAULT 0, FOREIGN KEY apikeys_user_id_fk(user_id) REFERENCES logins(user_id)) ENGINE=InnoDB;", state->md->table_prefix) < 0)
+    if (state->mi->simple_fquery(state->md, "CREATE TABLE IF NOT EXISTS %sapikeys(token VARCHAR(64) NOT NULL PRIMARY KEY, secret VARCHAR(64) NOT NULL UNIQUE KEY, user_id INT UNSIGNED NOT NULL, contest_id INT UNSIGNED NOT NULL, create_time DATETIME NOT NULL, expiry_time DATETIME DEFAULT NULL, payload VARCHAR(1024) DEFAULT NULL, origin VARCHAR(128) DEFAULT NULL, all_contests TINYINT NOT NULL DEFAULT 0, role_id TINYINT NOT NULL DEFAULT 0, FOREIGN KEY apikeys_user_id_fk(user_id) REFERENCES logins(user_id)) ENGINE=InnoDB;", state->md->table_prefix) < 0)
       return -1;
     if (state->mi->simple_fquery(state->md, "UPDATE %sconfig SET config_val = '10' WHERE config_key = 'version' ;", state->md->table_prefix) < 0)
       return -1;

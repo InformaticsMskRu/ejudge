@@ -169,7 +169,7 @@ CREATE TABLE %sgroupmembers
     FOREIGN KEY u(user_id) REFERENCES logins(user_id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE %sapikeys
+CREATE TABLE IF NOT EXISTS %sapikeys
 (
     token VARCHAR(64) NOT NULL PRIMARY KEY,
     secret VARCHAR(64) NOT NULL UNIQUE KEY,

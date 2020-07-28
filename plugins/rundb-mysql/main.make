@@ -15,7 +15,7 @@
 
 PLUGINDIR = $(libexecdir)/ejudge/plugins
 
-RLDB_MYSQL_CFILES = rldb_mysql.c
+RLDB_MYSQL_CFILES = rldb_mysql.c http_notify.c
 
 CFILES = $(RLDB_MYSQL_CFILES)
 HFILES =
@@ -25,7 +25,7 @@ LD = gcc
 
 CFLAGS = -I. -I../.. -I../../include $(MYSQL_INCL_OPT) $(EXPAT_INCL_OPT) $(CDEBUGFLAGS) $(CCOMPFLAGS) $(CEXTRAFLAGS) $(WPTRSIGN)
 LDFLAGS = $(MYSQL_LIB_OPT) $(EXPAT_LIB_OPT) $(CDEBUGFLAGS) $(LDCOMPFLAGS) $(LDEXTRAFLAGS)
-LDLIBS = $(EXTRALIBS) $(MYSQL_LIBS) -lexpat -lm
+LDLIBS = $(EXTRALIBS) $(MYSQL_LIBS) -lexpat -lm -lcurl
 
 PLUGINS = rldb_mysql.so
 

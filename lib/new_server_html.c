@@ -110,7 +110,7 @@ typedef struct ContestExternalActionVector
   ContestExternalActions *v;
 } ContestExternalActionVector;
 
-enum { CONTEST_EXPIRE_TIME = 300 };
+enum { CONTEST_EXPIRE_TIME = 3600 * 12 };
 static struct contest_extra **extras = 0;
 static size_t extra_a = 0, extra_u = 0;
 
