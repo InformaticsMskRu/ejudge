@@ -8051,7 +8051,7 @@ priv_raw_audit_log(
   char *audit_text = 0;
   size_t audit_text_size = 0;
 
-  phr->json_reply = 1;
+  phr->json_reply = 0;
 
   if (hr_cgi_param(phr, "run_uuid", &s) > 0) {
     if (ej_uuid_parse(s, &run_uuid) < 0) {
@@ -8118,7 +8118,7 @@ priv_raw_report(
   int content_type = 0;
   const unsigned char *start_ptr = NULL;
 
-  phr->json_reply = 1;
+  phr->json_reply = 0;
 
   if (opcaps_check(phr->caps, OPCAP_VIEW_REPORT) < 0) {
     error_page(fout, phr, 1, NEW_SRV_ERR_PERMISSION_DENIED);
