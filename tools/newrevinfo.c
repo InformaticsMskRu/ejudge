@@ -207,7 +207,7 @@ static int
 read_git_commit_id_by_version(unsigned char *id_buf, int id_buf_size, const unsigned char *version)
 {
     unsigned char cmd_buf[1024];
-    snprintf(cmd_buf, sizeof(cmd_buf), "git show --format=%%h \"v%s\"", version);
+    snprintf(cmd_buf, sizeof(cmd_buf), "git show --format=%%h \"informatics\"", version);
     FILE *f = popen(cmd_buf, "r");
     if (!f) {
         fprintf(stderr, "cannot invoke git\n");

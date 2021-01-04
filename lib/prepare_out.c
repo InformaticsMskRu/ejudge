@@ -2103,6 +2103,7 @@ enum
   ARCH_WIN32,
   ARCH_VALGRIND,
   ARCH_DOTNET,
+  ARCH_NSJAIL,
 
   ARCH_LAST,
 };
@@ -2120,7 +2121,7 @@ static const unsigned char * const supported_archs[] =
   "win32",
   "valgrind",
   "dotnet",
-
+  "nsjail",
   0,
 };
 static const unsigned char * const arch_abstract_names [] =
@@ -2136,6 +2137,7 @@ static const unsigned char * const arch_abstract_names [] =
   "Win32",
   "Valgrind",
   "Dotnet",
+  "Linux-nsjail",
 
   0,
 };
@@ -2409,6 +2411,24 @@ generate_abstract_tester(
     }
     break;
 
+  case ARCH_NSJAIL:
+    fprintf(f, "[tester]\n"
+            "name = %s\n"
+            "arch = \"%s\"\n"
+            "abstract\n"
+            "no_core_dump\n"
+            "kill_signal = TERM\n"
+            "memory_limit_type = \"java\"\n"
+            "secure_exec_type = \"java\"\n"
+            "start_cmd = \"runnsjail\"\n",
+            arch_abstract_names[arch], supported_archs[arch]);
+    if (!atst) {
+      fprintf(f, "start_env = \"LANG=C\"\n"
+              "start_env = \"EJUDGE_PREFIX_DIR\"\n");
+    }
+    break;
+
+
   default:
     abort();
   }
@@ -2511,6 +2531,9 @@ generate_concrete_tester(FILE *f, int arch,
     break;
 
   case ARCH_DOTNET:
+    break;
+
+  case ARCH_NSJAIL:
     break;
 
   default:
